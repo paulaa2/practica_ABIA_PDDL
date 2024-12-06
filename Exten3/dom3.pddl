@@ -1,59 +1,74 @@
-(define (domain visionado_basico)
-  (:requirements :strips :typing :fluents)
+(define (domain visionado_contenidos)
+    (:requirements :typing :negative-preconditions :disjunctive-preconditions :existential-preconditions :universal-preconditions :fluents)
 
-  ;; Tipos
-  (:types contenido dia)
+    ;; Tipos
+    (:types
+        contenido dia - object
+    )
 
-  ;; Predicados y funciones
-  (:predicates
-    (completado ?contenido - contenido)     ; El contenido se completó antes del plan
-    (visto ?contenido - contenido)          ; El contenido ya ha sido visto
-    (predecesor ?a ?b - contenido)          ; ?a debe verse antes que ?b
-    (paralelo ?a ?b - contenido)            ; ?a y ?b son paralelos
-    (asignado ?contenido - contenido ?dia - dia) ; El contenido está asignado a un día
-    (dia_disponible ?dia - dia)             ; El día está disponible para asignar contenido
-    (anterior ?dia1 ?dia2 - dia)            ; ?dia1 es anterior a ?dia2
-  )
+    ;; Predicados
+    (:predicates
+        (visto ?c - contenido)                  ; El contenido ya ha sido visto
+        (predecesor ?c1 - contenido ?c2 - contenido) ; ?c1 debe verse antes que ?c2
+        (paralelo ?c1 - contenido ?c2 - contenido)   ; ?c1 y ?c2 son paralelos
+        (asignado ?c - contenido ?d - dia)     ; El contenido está asignado a un día
+        (dia_actual ?d - dia)                  ; Día en el que estamos actualmente
+        (siguiente_dia ?d1 - dia ?d2 - dia)    ; Relación de días consecutivos
+        (anterior_dia ?d1 - dia ?d2 - dia)     ; Relación de días consecutivos en sentido inverso
+    )
 
-  ;; Funciones
-  (:functions
-    (conteo ?dia - dia)                     ; Número de contenidos asignados a un día
-  )
+    ;; Funciones
+    (:functions
+        (conteo_dia ?d - dia)                  ; Número de contenidos asignados al día
+    )
 
-  ;; Acción: ver contenido
-  (:action ver_contenido
-    :parameters (?contenido - contenido ?dia - dia)
+    ;; Acciones
+(:action asignar_contenido
+    :parameters (?c - contenido ?actuald - dia)
     :precondition (and
-      (dia_disponible ?dia)                     ; El día debe estar disponible
-      (not (visto ?contenido))                  ; El contenido no debe haber sido visto
-      (forall (?pred - contenido)               ; Verificar predecesores
-        (or (not (predecesor ?pred ?contenido))
-            (completado ?pred)
-            (exists (?prev_dia - dia)
-              (and (visto ?pred)
-                   (asignado ?pred ?prev_dia)
-                   (anterior ?prev_dia ?dia))
+        (dia_actual ?actuald)             ; Solo asignar al día actual
+        (not (visto ?c))                  ; El contenido no debe haberse visto
+        ;; Los predecesores deben haberse visto antes del día actual
+        (forall (?pre - contenido)
+            (imply (predecesor ?pre ?c)
+                (and (visto ?pre) (not (asignado ?pre ?actuald)))
             )
         )
-      )
-      (forall (?par - contenido)                ; Verificar paralelos
-        (or (not (paralelo ?contenido ?par))
-            (and (visto ?par)
-                 (or (= ?dia ?dia)              ; Mismo día
-                     (exists (?rel_dia - dia)
-                       (or (anterior ?rel_dia ?dia)
-                           (anterior ?dia ?rel_dia))
-                     )
-                 )
+        ;; Los paralelos deben asignarse el mismo día o en días consecutivos
+        (forall (?par - contenido)
+        (imply (paralelo ?c ?par)
+        (or
+            (and (asignado ?par ?actuald)) ; Mismo día
+            (exists (?rel_dia - dia)
+                (or
+                    (and (asignado ?par ?rel_dia) (anterior_dia ?rel_dia ?actuald))
+                    (and (asignado ?par ?rel_dia) (anterior_dia ?actuald ?rel_dia)))
             )
         )
-      )
-      (< (conteo ?dia) 3)                       ; Límite de contenidos por día
+    )
+)
+
+        (< (conteo_dia ?actuald) 3)
     )
     :effect (and
-      (visto ?contenido)                        ; Marcar el contenido como visto
-      (asignado ?contenido ?dia)                ; Asignar el contenido al día
-      (increase (conteo ?dia) 1)                ; Incrementar el contador del día
+        (visto ?c)                         
+        (asignado ?c ?actuald)             
+        (increase (conteo_dia ?actuald) 1) 
     )
-  )
+)
+
+
+    (:action avanzar_dia
+        :parameters (?nextd - dia ?actuald - dia ?prevd - dia)
+        :precondition (and
+            (dia_actual ?actuald)        
+            (anterior_dia ?prevd ?actuald) 
+            (siguiente_dia ?actuald ?nextd)   
+        )
+        :effect (and
+            (not (dia_actual ?actuald))      
+            (not (dia_actual ?prevd))         
+            (dia_actual ?nextd)                
+        )
+    )
 )
