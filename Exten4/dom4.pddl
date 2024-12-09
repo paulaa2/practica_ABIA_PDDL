@@ -49,8 +49,8 @@
     )
 )
 
-        (< (conteo_min_dia ?actuald) 300)
-        (< (+ (conteo_min_dia ?actuald) (minutos ?c)) 300)
+        (< (conteo_min_dia ?actuald) 200)
+        (< (+ (conteo_min_dia ?actuald) (minutos ?c)) 200)
     )
     :effect (and
         (visto ?c)                         
