@@ -10,14 +10,14 @@ import time
 
 # Funciones generadoras de problemas
 
-def gen0((numContingut, numVist, numObjectiu, numDies, semilla):
+def gen0(numContingut, numVist, numObjectiu, numDies, semilla):
     rng = Random(semilla)
 
-    f = open('experimento_gen4_' + str(numContingut) + '_' + str(numObjectiu) + '_' + str(numVist) + '_' + str(numDies)+ '_' + str(semilla) + '.pddl', 'w')
+    f = open('experimento_gen0_' + str(numContingut) + '_' + str(numObjectiu) + '_' + str(numVist) + '_' + str(numDies)+ '_' + str(semilla) + '.pddl', 'w')
 
     # f = open('MECAGO_FUNCIONA'+'.pddl', 'w')
 
-    f.write('(define (problem visionado_test)\n  (:domain visionado_contenidos)\n  (:objects')
+    f.write('(define (problem visionado_usuario_complejo) (:domain visionado_basico)\n  (:objects')
     f.write('\n')
 
     # Definir Objetos
@@ -56,7 +56,7 @@ def gen0((numContingut, numVist, numObjectiu, numDies, semilla):
     f.write('\n  ')
 
     for i in range(0, numDies-1):
-        aux = '\n (dia_disponible dia' + ' dia' + str(i) + ')'
+        aux = '\n (dia_disponible dia' + str(i) + ')'
         f.write(aux)
 
     f.write('\n  ')
@@ -562,6 +562,9 @@ elif extension == 4:
 else:
     print("Extension no valida")
     sys.exit()
+
+    
+
 
     
 
