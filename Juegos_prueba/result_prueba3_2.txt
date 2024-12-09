@@ -1,0 +1,63 @@
+ff: parsing domain file
+domain 'VISIONADO_CONTENIDOS' defined
+ ... done.
+ff: parsing problem file
+problem 'VISIONADO_TEST' defined
+ ... done.
+
+
+no metric specified. plan length assumed.
+
+checking for cyclic := effects --- OK.
+
+ff: search configuration is  best-first on 1*g(s) + 5*h(s) where
+    metric is  plan length
+
+advancing to distance:   15
+                         14
+                         13
+                         12
+                         11
+                         10
+                          9
+                          8
+                          7
+                          6
+                          5
+                          4
+                          3
+                          2
+                          1
+                          0
+
+ff: found legal plan as follows
+
+step    0: ASIGNAR_CONTENIDO CAPITULO2 DIA1
+        1: ASIGNAR_CONTENIDO PELICULA2 DIA1
+        2: AVANZAR_DIA DIA2 DIA1 DIA2
+        3: ASIGNAR_CONTENIDO EXTRA6 DIA2
+        4: ASIGNAR_CONTENIDO EXTRA7 DIA2
+        5: ASIGNAR_CONTENIDO CAPITULO3 DIA2
+        6: AVANZAR_DIA DIA3 DIA2 DIA3
+        7: ASIGNAR_CONTENIDO EXTRA4 DIA3
+        8: ASIGNAR_CONTENIDO EXTRA5 DIA3
+        9: ASIGNAR_CONTENIDO CAPITULO4 DIA3
+       10: AVANZAR_DIA DIA4 DIA3 DIA4
+       11: ASIGNAR_CONTENIDO CAPITULO5 DIA4
+       12: ASIGNAR_CONTENIDO EXTRA3 DIA4
+       13: ASIGNAR_CONTENIDO PELICULA3 DIA4
+       14: AVANZAR_DIA DIA5 DIA4 DIA5
+       15: ASIGNAR_CONTENIDO EXTRA1 DIA5
+       16: ASIGNAR_CONTENIDO EXTRA2 DIA5
+       17: ASIGNAR_CONTENIDO PELICULA4 DIA5
+       18: AVANZAR_DIA DIA6 DIA5 DIA6
+       19: ASIGNAR_CONTENIDO PELICULA5 DIA6
+
+
+time spent:    0.00 seconds instantiating 5 easy, 590 hard action templates
+               0.00 seconds reachability analysis, yielding 258 facts and 595 actions
+               0.00 seconds creating final representation with 244 relevant facts, 12 relevant fluents     
+               0.00 seconds computing LNF
+               0.00 seconds building connectivity graph
+              35.62 seconds searching, evaluating 39220 states, to a max depth of 0
+              35.62 seconds total time
