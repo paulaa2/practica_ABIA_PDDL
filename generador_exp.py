@@ -10,8 +10,102 @@ import time
 
 # Funciones generadoras de problemas
 
-# def gen0():
-#     pass
+def gen0((numContingut, numVist, numObjectiu, numDies, semilla):
+    rng = Random(semilla)
+
+    f = open('experimento_gen4_' + str(numContingut) + '_' + str(numObjectiu) + '_' + str(numVist) + '_' + str(numDies)+ '_' + str(semilla) + '.pddl', 'w')
+
+    # f = open('MECAGO_FUNCIONA'+'.pddl', 'w')
+
+    f.write('(define (problem visionado_test)\n  (:domain visionado_contenidos)\n  (:objects')
+    f.write('\n')
+
+    # Definir Objetos
+
+    grups = {}
+    count = [0]
+    for i in range(sagas):
+        count.append(0)
+
+    for _ in range(numContingut):
+        grup = rng.randint(0, sagas)  # Asignar a uno de las sagas
+        if grup not in grups:
+            grups[grup] = []
+        grups[grup].append(count[grup])
+        count[grup] += 1
+
+    for grup, pelicules in grups.items():
+        for pelicula in pelicules:
+            f.write(' pelicula_' + str(pelicula) + '_g' + str(grup))
+        f.write(' - contenido\n')
+    
+    f.write('\n')
+
+    for i in range(numDies):
+        aux = ' dia' + str(i)
+        f.write(aux)
+
+
+    f.write(' - dia\n  )')
+
+    f.write('\n(:init')
+
+
+    # Añadir relaciones entre dias
+
+    f.write('\n  ')
+
+    for i in range(0, numDies-1):
+        aux = '\n (dia_disponible dia' + ' dia' + str(i) + ')'
+        f.write(aux)
+
+    f.write('\n  ')
+
+    ## Añadir predecesores 
+    for grup, pelicules in grups.items():
+        for i in range(len(pelicules)-1):
+            f.write('\n(predecesor pelicula_' + str(i) + '_g' + str(grup)+ ' pelicula_' + str(i+1) + '_g' + str(grup) + ')')
+    f.write('\n')
+
+    ## Añadir vistas
+
+    visto = [0]
+    no_obj = []
+    for i in range(sagas):
+        visto.append(0)
+
+    for _ in range(numVist):
+        aux = rng.randint(0, sagas)
+        aux2 = 'pelicula_' + str(visto[aux]) + '_g' + str(aux)
+        f.write('\n  (visto ' + aux2 +')')
+        visto[aux] += 1
+        no_obj.append([visto[aux], aux])
+
+    f.write(') \n')
+    f.write('\n')
+
+    # Añadir objetivos
+    cumplido = False
+
+    f.write('(:goal \n (and')
+    for i in range(numObjectiu):
+        while not cumplido:
+            aux = rng.randint(0, sagas)
+            aux2 = rng.randint(0, len(grups[aux])-1)
+
+            if [aux2, aux] in no_obj:
+                cumplido = False
+            else:
+                obj = '\n (visto pelicula_' + str(aux2) + '_g' + str(aux) + ')'
+                no_obj.append([aux2, aux])
+
+                f.write(obj)
+                cumplido = True
+        cumplido = False
+
+    f.write('\n   )\n  )\n )')
+    f.close()
+
 
 # def gen1():
 #     rng = Random(semilla)
@@ -455,15 +549,15 @@ semilla = int(sys.argv[7])
 
 start_time = time.time()
 
-# if extension == 0:
-#     gen0(numContingut, numVist, numObjectiu, numDies, semilla)
+if extension == 0:
+    gen0(numContingut, numVist, numObjectiu, numDies, semilla)
 # elif extension == 1:
 #     gen1(numContingut, numVist, numObjectiu, numDies, semilla)
 # elif extension == 2:
 #     gen2(numContingut, numVist, numObjectiu, numDies, semilla)
 # elif extension == 3:
 #     gen3(numContingut, numVist, numObjectiu, numDies, semilla)
-if extension == 4:
+elif extension == 4:
     gen4(numContingut, numVist, numObjectiu, numDies, semilla, sagas)
 else:
     print("Extension no valida")
