@@ -6,19 +6,6 @@ problem 'VISIONADO_USUARIO_COMPLEJO' defined
  ... done.
 
 
-predicate ASIGNADO is declared to use unknown or empty type CONTENIDO
-
-
-C:\Users\veron\Documents\UNI\2º\Septiembre\ABIA\Planificacion>metricff -O -o dom0.pddl -f probl0_1.pddl
-
-ff: parsing domain file
-domain 'VISIONADO_BASICO' defined
- ... done.
-ff: parsing problem file
-problem 'VISIONADO_USUARIO_COMPLEJO' defined
- ... done.
-
-
 no metric specified. plan length assumed.
 
 checking for cyclic := effects --- OK.
