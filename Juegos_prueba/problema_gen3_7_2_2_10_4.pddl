@@ -46,6 +46,8 @@
 (predecesor pelicula_0_g1 pelicula_1_g1)
 (predecesor pelicula_1_g1 pelicula_2_g1)
 
+(predecesor pelicula_1_g0 pelicula_2_g1)
+
 
   (visto pelicula_0_g0)
   (visto pelicula_0_g1)) 
