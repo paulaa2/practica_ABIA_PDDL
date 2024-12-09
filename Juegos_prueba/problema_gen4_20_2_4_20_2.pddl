@@ -111,15 +111,13 @@
 (predecesor pelicula_6_g2 pelicula_7_g2)
 
 (paralelo pelicula_4_g1 pelicula_1_g0)
-(predecesor pelicula_4_g1 pelicula_3_g0)
-(paralelo pelicula_3_g1 pelicula_3_g0)
-(predecesor pelicula_2_g0 pelicula_3_g1)
-(predecesor pelicula_3_g1 pelicula_4_g0)
+(paralelo pelicula_2_g1 pelicula_1_g0)
+(predecesor pelicula_5_g0 pelicula_6_g2)
 
   (visto pelicula_0_g2)
   (visto pelicula_0_g0)
   (visto pelicula_0_g1)
-  (visto pelicula_1_g2)
+  (visto pelicula_1_g2))
 (:goal 
  (and
  (visto pelicula_5_g1)
@@ -127,4 +125,3 @@
    )
   )
  )
-)
