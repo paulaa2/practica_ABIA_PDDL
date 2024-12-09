@@ -62,7 +62,6 @@
 
 (predecesor pelicula_0_g1 pelicula_0_g2)
 (paralelo pelicula_0_g2 pelicula_2_g0)
-(paralelo pelicula_1_g1 pelicula_0_g2)
 
   (visto pelicula_0_g1)
 (:goal 
